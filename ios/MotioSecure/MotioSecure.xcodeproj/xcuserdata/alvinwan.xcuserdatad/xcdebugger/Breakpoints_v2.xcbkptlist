@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MotioSecure/ViewController.swift"
-            timestampString = "520124366.988209"
+            timestampString = "520126425.108554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
             landmarkName = "onTouchTestLiveFeed(_:)"
             landmarkType = "7">
          </BreakpointContent>

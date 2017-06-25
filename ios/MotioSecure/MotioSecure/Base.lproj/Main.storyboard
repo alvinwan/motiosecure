@@ -29,8 +29,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVG-VE-p8f">
-                                <rect key="frame" x="138" y="265.5" width="99" height="30"/>
-                                <state key="normal" title="Test Live Feed"/>
+                                <rect key="frame" x="128" y="393" width="120" height="30"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <state key="normal" title="Launch Live Feed"/>
                                 <connections>
                                     <action selector="onTouchTestLiveFeed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jza-3j-Wbe"/>
                                 </connections>
@@ -41,21 +44,54 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email Address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Beq-fq-wLM">
+                                <rect key="frame" x="133" y="275" width="108" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="youremail@gmail.com" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ebq-t6-kfe">
+                                <rect key="frame" x="106" y="304" width="163" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="onEnterEmailAddress:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="7Fo-1f-PWI"/>
+                                    <action selector="onFinishEmailAddress:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="RQJ-Gp-Iw1"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status update" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHm-qk-Dbk">
+                                <rect key="frame" x="135" y="342" width="105" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.19732334903614557" blue="0.15192157973007736" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="ebq-t6-kfe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="25" id="5qh-W6-W4f"/>
+                            <constraint firstItem="ZVG-VE-p8f" firstAttribute="top" secondItem="GHm-qk-Dbk" secondAttribute="bottom" constant="30" id="9O6-QX-ziv"/>
                             <constraint firstItem="31Q-wE-zW9" firstAttribute="top" secondItem="DV4-54-Xb1" secondAttribute="bottom" constant="8" id="CaS-j2-gIH"/>
                             <constraint firstItem="DV4-54-Xb1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Js4-DR-y9M"/>
                             <constraint firstItem="31Q-wE-zW9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LNe-U2-A1Q"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="ebq-t6-kfe" secondAttribute="trailing" constant="25" id="QeW-jy-NJJ"/>
+                            <constraint firstItem="Beq-fq-wLM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Sfg-mT-YBt"/>
                             <constraint firstItem="31Q-wE-zW9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="25" id="SsN-uc-QI7"/>
+                            <constraint firstItem="Beq-fq-wLM" firstAttribute="top" secondItem="31Q-wE-zW9" secondAttribute="bottom" constant="17.5" id="Wub-1D-jSW"/>
+                            <constraint firstItem="ebq-t6-kfe" firstAttribute="top" secondItem="Beq-fq-wLM" secondAttribute="bottom" constant="8" id="Xn0-nT-7eV"/>
                             <constraint firstItem="DV4-54-Xb1" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="142" id="YBr-yk-cw3"/>
-                            <constraint firstItem="ZVG-VE-p8f" firstAttribute="top" secondItem="31Q-wE-zW9" secondAttribute="bottom" constant="8" id="ddh-O9-FUG"/>
+                            <constraint firstItem="ebq-t6-kfe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ydy-oc-O9g"/>
+                            <constraint firstItem="GHm-qk-Dbk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ipg-FJ-aXE"/>
+                            <constraint firstItem="GHm-qk-Dbk" firstAttribute="top" secondItem="ebq-t6-kfe" secondAttribute="bottom" constant="8" id="lrK-c0-GvU"/>
                             <constraint firstItem="ZVG-VE-p8f" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="x0I-Mx-lHO"/>
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="31Q-wE-zW9" secondAttribute="trailing" constant="25" id="ziR-Mb-Dyy"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="deviceTokenField" destination="31Q-wE-zW9" id="JtE-zh-k1N"/>
+                        <outlet property="emailAddressField" destination="ebq-t6-kfe" id="unk-B8-oEv"/>
+                        <outlet property="emailAddressStatusField" destination="GHm-qk-Dbk" id="xcK-af-JMv"/>
+                        <outlet property="liveFeedButton" destination="ZVG-VE-p8f" id="icg-Kx-lCj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
