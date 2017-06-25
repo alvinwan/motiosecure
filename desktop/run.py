@@ -21,6 +21,7 @@ import time
 import random
 import os
 import os.path
+import json
 
 app = Flask(__name__)
 
@@ -31,15 +32,18 @@ THRESHOLD = 0.1
 LOG_DIR = 'logs/%s' % random.randint(10000, 99999)
 MAX_FALSE_DURATION = 2  # maximum duration between periods of motion detection, for videos to be strung together (in seconds)
 PORT = 6789
+CONFIG_PATH = 'config.json'
 
-
+if not os.path.exists(CONFIG_PATH):
+    json.dump({}, open(CONFIG_PATH, 'w'))
 os.makedirs(LOG_DIR, exist_ok=True)
 
 
 @app.route("/")
 def index():
     autoaccept_msg = request.args.get('autoaccept_msg', '')
-    return '<p>1. Add your phone number or email</p><span>For phone numbers, add your country code. For the US, use +1<phone number>.</span>%s<form method="post" action="/autoaccept"><input type="text" name="value" placeholder="+18880008888 or wallawallabingbang@gmail.com"><input type="hidden" name="key" value="%s"><input type="submit"></form><p>2. <a href="%s">Start monitoring"</a></p>' % (autoaccept_msg, autoaccept_key, url_for('monitor'))
+    token_msg = request.args.get('token_msg', '')
+    return '<p>1. To view live feeds, add your phone number or email</p><span>For phone numbers, add your country code. For the US, use +1<phone number>.</span>%s<form method="post" action="/autoaccept"><input type="text" name="value" placeholder="+18880008888 or wallawallabingbang@gmail.com"><input type="hidden" name="key" value="%s"><input type="submit"></form><p>2. Download the iOS app, and enter token displayed on the app homepage, below:</p>%s<form action="/token" method="post"><input type="text" name="token"><input type="hidden" name="key" value="%s"><input type="submit"></form><p>3. <a href="%s">Start monitoring"</a></p>' % (autoaccept_msg, autoaccept_key, token_msg, autoaccept_key, url_for('monitor'))
 
 
 @app.route("/autoaccept", methods=['POST'])
@@ -51,6 +55,21 @@ def accept():
     call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [request.form['value']])
     autoaccept_key = random.getrandbits(128)
     return redirect(url_for('index', autoaccept_msg='Successfully added' + request.form['value']))
+
+
+@app.route("/token", methods=['POST'])
+def token():
+    global autoaccept_key
+    if request.remote_addr != '127.0.0.1' or \
+            int(request.form['key']) != autoaccept_key:
+        abort(403)
+    with open(CONFIG_PATH, 'r') as f:
+        config = json.load(f)
+    config['token'] = request.form['token']
+    with open(CONFIG_PATH, 'w') as f:
+        json.dump(config, f)
+    autoaccept_key = random.getrandbits(128)
+    return redirect(url_for('index', token_msg='Successfully added token:' + request.form['token']))
 
 
 @app.route("/monitor")
@@ -94,6 +113,8 @@ def watch():
     writer = None
     false_start = time.time()
 
+    config = json.load(open(CONFIG_PATH, 'r'))
+
     while True:
         _, image = capture.read()
         if len(images) > DEQUE_LENGTH - 1:
@@ -113,7 +134,7 @@ def watch():
                     new_video = True
 
                 if new_video:
-                    send_ios_notification()
+                    send_ios_notification(config['token'])
                     video_path = os.path.join(LOG_DIR, 'video%s.mp4' % time.time())
                     width, height, _ = image.shape
                     writer = cv2.VideoWriter(
@@ -143,14 +164,13 @@ async def send_detections(websocket, path):
         await asyncio.sleep(0.1)
 
 
-def send_ios_notification():
-    apns = APNs(use_sandbox=True, cert_file='../mergedPushCertificate.pem', key_file='../mergedPushCertificate.pem')
+def send_ios_notification(token: str):
+    apns = APNs(use_sandbox=True, cert_file='bundle.pem', key_file='bundle.pem')
 
     # Send a notification
-    token_hex = '48295C0A83AAF1765FD7E749CB705527EDEDBD7E01724FFD890D7E051504F48B'
     payload = Payload(
         alert="Motion detected", sound="default", badge=1, mutable_content=True)
-    apns.gateway_server.send_notification(token_hex, payload)
+    apns.gateway_server.send_notification(token, payload)
 
 t = threading.Thread(target=start_socket)
 t.start()

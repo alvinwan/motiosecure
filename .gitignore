@@ -1,6 +1,8 @@
 *.pem
+**/*.pem
 *.mobileprovision
 *.csr
+desktop/config.json
 
 desktop/logs
 
