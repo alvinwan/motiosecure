@@ -1,0 +1,550 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A54E18791EFF8F99009409FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54E18781EFF8F99009409FE /* AppDelegate.swift */; };
+		A54E187B1EFF8F99009409FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54E187A1EFF8F99009409FE /* ViewController.swift */; };
+		A54E187E1EFF8F99009409FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54E187C1EFF8F99009409FE /* Main.storyboard */; };
+		A54E18801EFF8F99009409FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54E187F1EFF8F99009409FE /* Assets.xcassets */; };
+		A54E18831EFF8F99009409FE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54E18811EFF8F99009409FE /* LaunchScreen.storyboard */; };
+		A54E188E1EFF8F99009409FE /* MotioSecureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54E188D1EFF8F99009409FE /* MotioSecureTests.swift */; };
+		A54E18991EFF8F99009409FE /* MotioSecureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54E18981EFF8F99009409FE /* MotioSecureUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A54E188A1EFF8F99009409FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A54E186D1EFF8F99009409FE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A54E18741EFF8F99009409FE;
+			remoteInfo = MotioSecure;
+		};
+		A54E18951EFF8F99009409FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A54E186D1EFF8F99009409FE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A54E18741EFF8F99009409FE;
+			remoteInfo = MotioSecure;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A54E18751EFF8F99009409FE /* MotioSecure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotioSecure.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A54E18781EFF8F99009409FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A54E187A1EFF8F99009409FE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A54E187D1EFF8F99009409FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A54E187F1EFF8F99009409FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A54E18821EFF8F99009409FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A54E18841EFF8F99009409FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A54E18891EFF8F99009409FE /* MotioSecureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MotioSecureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A54E188D1EFF8F99009409FE /* MotioSecureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotioSecureTests.swift; sourceTree = "<group>"; };
+		A54E188F1EFF8F99009409FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A54E18941EFF8F99009409FE /* MotioSecureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MotioSecureUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A54E18981EFF8F99009409FE /* MotioSecureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotioSecureUITests.swift; sourceTree = "<group>"; };
+		A54E189A1EFF8F99009409FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A54E18A61EFF9F18009409FE /* MotioSecure.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MotioSecure.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A54E18721EFF8F99009409FE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A54E18861EFF8F99009409FE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A54E18911EFF8F99009409FE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A54E186C1EFF8F99009409FE = {
+			isa = PBXGroup;
+			children = (
+				A54E18771EFF8F99009409FE /* MotioSecure */,
+				A54E188C1EFF8F99009409FE /* MotioSecureTests */,
+				A54E18971EFF8F99009409FE /* MotioSecureUITests */,
+				A54E18761EFF8F99009409FE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A54E18761EFF8F99009409FE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A54E18751EFF8F99009409FE /* MotioSecure.app */,
+				A54E18891EFF8F99009409FE /* MotioSecureTests.xctest */,
+				A54E18941EFF8F99009409FE /* MotioSecureUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A54E18771EFF8F99009409FE /* MotioSecure */ = {
+			isa = PBXGroup;
+			children = (
+				A54E18A61EFF9F18009409FE /* MotioSecure.entitlements */,
+				A54E18781EFF8F99009409FE /* AppDelegate.swift */,
+				A54E187A1EFF8F99009409FE /* ViewController.swift */,
+				A54E187C1EFF8F99009409FE /* Main.storyboard */,
+				A54E187F1EFF8F99009409FE /* Assets.xcassets */,
+				A54E18811EFF8F99009409FE /* LaunchScreen.storyboard */,
+				A54E18841EFF8F99009409FE /* Info.plist */,
+			);
+			path = MotioSecure;
+			sourceTree = "<group>";
+		};
+		A54E188C1EFF8F99009409FE /* MotioSecureTests */ = {
+			isa = PBXGroup;
+			children = (
+				A54E188D1EFF8F99009409FE /* MotioSecureTests.swift */,
+				A54E188F1EFF8F99009409FE /* Info.plist */,
+			);
+			path = MotioSecureTests;
+			sourceTree = "<group>";
+		};
+		A54E18971EFF8F99009409FE /* MotioSecureUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A54E18981EFF8F99009409FE /* MotioSecureUITests.swift */,
+				A54E189A1EFF8F99009409FE /* Info.plist */,
+			);
+			path = MotioSecureUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A54E18741EFF8F99009409FE /* MotioSecure */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A54E189D1EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecure" */;
+			buildPhases = (
+				A54E18711EFF8F99009409FE /* Sources */,
+				A54E18721EFF8F99009409FE /* Frameworks */,
+				A54E18731EFF8F99009409FE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MotioSecure;
+			productName = MotioSecure;
+			productReference = A54E18751EFF8F99009409FE /* MotioSecure.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A54E18881EFF8F99009409FE /* MotioSecureTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A54E18A01EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecureTests" */;
+			buildPhases = (
+				A54E18851EFF8F99009409FE /* Sources */,
+				A54E18861EFF8F99009409FE /* Frameworks */,
+				A54E18871EFF8F99009409FE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A54E188B1EFF8F99009409FE /* PBXTargetDependency */,
+			);
+			name = MotioSecureTests;
+			productName = MotioSecureTests;
+			productReference = A54E18891EFF8F99009409FE /* MotioSecureTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A54E18931EFF8F99009409FE /* MotioSecureUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A54E18A31EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecureUITests" */;
+			buildPhases = (
+				A54E18901EFF8F99009409FE /* Sources */,
+				A54E18911EFF8F99009409FE /* Frameworks */,
+				A54E18921EFF8F99009409FE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A54E18961EFF8F99009409FE /* PBXTargetDependency */,
+			);
+			name = MotioSecureUITests;
+			productName = MotioSecureUITests;
+			productReference = A54E18941EFF8F99009409FE /* MotioSecureUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A54E186D1EFF8F99009409FE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Alvin Wan";
+				TargetAttributes = {
+					A54E18741EFF8F99009409FE = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 74KM374FP9;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+					A54E18881EFF8F99009409FE = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 74KM374FP9;
+						ProvisioningStyle = Automatic;
+						TestTargetID = A54E18741EFF8F99009409FE;
+					};
+					A54E18931EFF8F99009409FE = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 74KM374FP9;
+						ProvisioningStyle = Automatic;
+						TestTargetID = A54E18741EFF8F99009409FE;
+					};
+				};
+			};
+			buildConfigurationList = A54E18701EFF8F99009409FE /* Build configuration list for PBXProject "MotioSecure" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A54E186C1EFF8F99009409FE;
+			productRefGroup = A54E18761EFF8F99009409FE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A54E18741EFF8F99009409FE /* MotioSecure */,
+				A54E18881EFF8F99009409FE /* MotioSecureTests */,
+				A54E18931EFF8F99009409FE /* MotioSecureUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A54E18731EFF8F99009409FE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A54E18831EFF8F99009409FE /* LaunchScreen.storyboard in Resources */,
+				A54E18801EFF8F99009409FE /* Assets.xcassets in Resources */,
+				A54E187E1EFF8F99009409FE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A54E18871EFF8F99009409FE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A54E18921EFF8F99009409FE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A54E18711EFF8F99009409FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A54E187B1EFF8F99009409FE /* ViewController.swift in Sources */,
+				A54E18791EFF8F99009409FE /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A54E18851EFF8F99009409FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A54E188E1EFF8F99009409FE /* MotioSecureTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A54E18901EFF8F99009409FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A54E18991EFF8F99009409FE /* MotioSecureUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A54E188B1EFF8F99009409FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A54E18741EFF8F99009409FE /* MotioSecure */;
+			targetProxy = A54E188A1EFF8F99009409FE /* PBXContainerItemProxy */;
+		};
+		A54E18961EFF8F99009409FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A54E18741EFF8F99009409FE /* MotioSecure */;
+			targetProxy = A54E18951EFF8F99009409FE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A54E187C1EFF8F99009409FE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A54E187D1EFF8F99009409FE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A54E18811EFF8F99009409FE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A54E18821EFF8F99009409FE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A54E189B1EFF8F99009409FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A54E189C1EFF8F99009409FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A54E189E1EFF8F99009409FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MotioSecure/MotioSecure.entitlements;
+				DEVELOPMENT_TEAM = 74KM374FP9;
+				INFOPLIST_FILE = MotioSecure/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alvinwan.MotioSecure;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		A54E189F1EFF8F99009409FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MotioSecure/MotioSecure.entitlements;
+				DEVELOPMENT_TEAM = 74KM374FP9;
+				INFOPLIST_FILE = MotioSecure/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alvinwan.MotioSecure;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		A54E18A11EFF8F99009409FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 74KM374FP9;
+				INFOPLIST_FILE = MotioSecureTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alvinwan.MotioSecureTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MotioSecure.app/MotioSecure";
+			};
+			name = Debug;
+		};
+		A54E18A21EFF8F99009409FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 74KM374FP9;
+				INFOPLIST_FILE = MotioSecureTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alvinwan.MotioSecureTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MotioSecure.app/MotioSecure";
+			};
+			name = Release;
+		};
+		A54E18A41EFF8F99009409FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 74KM374FP9;
+				INFOPLIST_FILE = MotioSecureUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alvinwan.MotioSecureUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = MotioSecure;
+			};
+			name = Debug;
+		};
+		A54E18A51EFF8F99009409FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 74KM374FP9;
+				INFOPLIST_FILE = MotioSecureUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alvinwan.MotioSecureUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = MotioSecure;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A54E18701EFF8F99009409FE /* Build configuration list for PBXProject "MotioSecure" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A54E189B1EFF8F99009409FE /* Debug */,
+				A54E189C1EFF8F99009409FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A54E189D1EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecure" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A54E189E1EFF8F99009409FE /* Debug */,
+				A54E189F1EFF8F99009409FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A54E18A01EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecureTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A54E18A11EFF8F99009409FE /* Debug */,
+				A54E18A21EFF8F99009409FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A54E18A31EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecureUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A54E18A41EFF8F99009409FE /* Debug */,
+				A54E18A51EFF8F99009409FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A54E186D1EFF8F99009409FE /* Project object */;
+}
