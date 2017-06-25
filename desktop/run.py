@@ -11,12 +11,16 @@ from collections import deque
 import websockets
 import asyncio
 import datetime
+import time
+from apns import APNs
+from apns import Frame
+from apns import Payload
 
 app = Flask(__name__)
 
 motion_detected = 'False'
 DEQUE_LENGTH = 10
-THRESHOLD = 0.05
+THRESHOLD = 0.1
 
 @app.route("/")
 def index():
@@ -67,7 +71,10 @@ def watch():
             difference = np.mean(image - images[-DEQUE_LENGTH+1], axis=2)
             svd.fit(difference)
             total_explained_variance = svd.explained_variance_ratio_.sum()
+            previous_motion_detected = motion_detected
             motion_detected = str(total_explained_variance > THRESHOLD)
+            if previous_motion_detected == 'False' and motion_detected == 'True':
+                send_ios_notification()
         images.append(image)
 
 def start_socket():
@@ -84,6 +91,15 @@ async def send_detections(websocket, path):
     while True:
         await websocket.send(motion_detected)
         await asyncio.sleep(0.1)
+
+
+def send_ios_notification():
+    apns = APNs(use_sandbox=True, cert_file='mergedPushCertificate.pem', key_file='mergedPushCertificate.pem')
+
+    # Send a notification
+    token_hex = '48295C0A83AAF1765FD7E749CB705527EDEDBD7E01724FFD890D7E051504F48B'
+    payload = Payload(alert="Motion detected", sound="default", badge=1, mutable_content=True)
+    apns.gateway_server.send_notification(token_hex, payload)
 
 t = threading.Thread(target=start_socket)
 t.start()
