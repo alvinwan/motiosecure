@@ -32,7 +32,6 @@ THRESHOLD = 0.1
 LOG_DIR = 'logs/%s' % random.randint(10000, 99999)
 MAX_FALSE_DURATION = 2  # maximum duration between periods of motion detection, for videos to be strung together (in seconds)
 PORT = 6789
-CONFIG_PATH = 'config.json'
 
 if not os.path.exists(CONFIG_PATH):
     json.dump({}, open(CONFIG_PATH, 'w'))
@@ -53,6 +52,10 @@ def accept():
             int(request.form['key']) != autoaccept_key:
         abort(403)
     call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [request.form['value']])
+    with Config() as config:
+        if 'autoaccept' not in config.data:
+            config.data['autoaccept'] = []
+        config.data['autoaccept'].append(request.form['token'])
     autoaccept_key = random.getrandbits(128)
     return redirect(url_for('index', autoaccept_msg='Successfully added' + request.form['value']))
 
@@ -63,11 +66,8 @@ def token():
     if request.remote_addr != '127.0.0.1' or \
             int(request.form['key']) != autoaccept_key:
         abort(403)
-    with open(CONFIG_PATH, 'r') as f:
-        config = json.load(f)
-    config['token'] = request.form['token']
-    with open(CONFIG_PATH, 'w') as f:
-        json.dump(config, f)
+    with Config() as config:
+        config.data['token'] = request.form['token']
     autoaccept_key = random.getrandbits(128)
     return redirect(url_for('index', token_msg='Successfully added token:' + request.form['token']))
 
@@ -174,3 +174,27 @@ def send_ios_notification(token: str):
 
 t = threading.Thread(target=start_socket)
 t.start()
+
+
+class Config:
+    """Configuration class.
+
+    Makes reading and writing from config slightly easier. Simple treat the
+    config object using a with statement.
+
+    with Config() as config:
+        config.data['key'] = 'some value'
+    """
+
+    DEFAULT_PATH = 'config.json'
+
+    def __init__(self, path: str=DEFAULT_PATH):
+        self.path = path
+
+    def __enter__(self):
+        with open(self.path, 'r') as f:
+            self.data = json.load(f)
+
+    def __exit__(self):
+        with open(self.path, 'w') as f:
+            json.dump(f)

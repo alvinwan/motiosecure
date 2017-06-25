@@ -2,9 +2,8 @@
 **/*.pem
 *.mobileprovision
 *.csr
-desktop/config.json
-
-desktop/logs
+**/config.json
+**/logs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
