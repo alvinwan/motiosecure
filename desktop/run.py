@@ -1,5 +1,12 @@
+from apns import APNs
+from apns import Frame
+from apns import Payload
+from flask import request
+from flask import abort
+from subprocess import call
 from flask import Flask
 from flask import url_for
+from flask import redirect
 from sklearn.decomposition import TruncatedSVD
 from collections import deque
 
@@ -14,23 +21,36 @@ import time
 import random
 import os
 import os.path
-from apns import APNs
-from apns import Frame
-from apns import Payload
 
 app = Flask(__name__)
 
-motion_detected = 'False'
+motion_detected = False
+autoaccept_key = random.getrandbits(128)
 DEQUE_LENGTH = 10
 THRESHOLD = 0.1
 LOG_DIR = 'logs/%s' % random.randint(10000, 99999)
 MAX_FALSE_DURATION = 2  # maximum duration between periods of motion detection, for videos to be strung together (in seconds)
+PORT = 6789
+
 
 os.makedirs(LOG_DIR, exist_ok=True)
 
+
 @app.route("/")
 def index():
-    return '<a href="%s">Start monitoring"</a>' % url_for('monitor')
+    autoaccept_msg = request.args.get('autoaccept_msg', '')
+    return '<p>1. Add your phone number or email</p><span>For phone numbers, add your country code. For the US, use +1<phone number>.</span>%s<form method="post" action="/autoaccept"><input type="text" name="value" placeholder="+18880008888 or wallawallabingbang@gmail.com"><input type="hidden" name="key" value="%s"><input type="submit"></form><p>2. <a href="%s">Start monitoring"</a></p>' % (autoaccept_msg, autoaccept_key, url_for('monitor'))
+
+
+@app.route("/autoaccept", methods=['POST'])
+def accept():
+    global autoaccept_key
+    if request.remote_addr != '127.0.0.1' or \
+            int(request.form['key']) != autoaccept_key:
+        abort(403)
+    call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [request.form['value']])
+    autoaccept_key = random.getrandbits(128)
+    return redirect(url_for('index', autoaccept_msg='Successfully added' + request.form['value']))
 
 
 @app.route("/monitor")
@@ -50,7 +70,7 @@ def monitor():
         </ul>
         <script>
             window.onload = function() {
-                var ws = new WebSocket("ws://127.0.0.1:5678/");
+                var ws = new WebSocket("ws://127.0.0.1:%d/");
                 var status = document.getElementById('detected');
                 ws.onmessage = function (event) {
                     status.innerHTML = event.data;
@@ -60,7 +80,7 @@ def monitor():
         </script>
     </body>
 </html>
-"""
+""" % PORT
 
 
 def watch():
@@ -108,7 +128,7 @@ def watch():
         images.append(image)
 
 def start_socket():
-    start_server = websockets.serve(send_detections, '127.0.0.1', 5678)
+    start_server = websockets.serve(send_detections, '127.0.0.1', PORT)
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
