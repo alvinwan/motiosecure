@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Convert token to string
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         print("APNs device token: \(deviceTokenString)")
+        (self.window?.rootViewController as! ViewController).setDeviceToken(deviceToken: deviceTokenString);
     }
     
     // Called when APNs failed to register the device for push notifications
