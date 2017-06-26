@@ -69,6 +69,11 @@ class ViewController: UIViewController {
         liveFeedButton.isEnabled = true;
         emailAddressStatusField.text = "email saved";
     }
+    
+    @IBAction func onTouchGithubLink(_ sender: UIButton) {
+        let url = URL(string: "http://github.com/alvinwan/motiosecure")
+        UIApplication.shared.open(url!);
+    }
 }
 
 extension UIViewController {
