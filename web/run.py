@@ -67,6 +67,8 @@ def regenerate_safety_key(response):
 def render_template(template_name: str, **kwargs):
     """Add the current safety key for template rendering."""
     kwargs['__safety_key'] = __safety_key
+    with Config() as config:
+        kwargs.update(config)
     return flask_render_template(template_name, **kwargs)
 
 

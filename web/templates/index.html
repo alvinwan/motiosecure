@@ -1,34 +1,37 @@
-
+{% extends "base.html" %}
 {% block title %}
 MotioSecure Homepage
 {% endblock %}
 {% block content %}
-<section class="step">
-  <span class="big-bg">1</span>
-  <p>1. To view live feeds, add your phone number or email</p>
-  <span>For phone numbers, add your country code. For the US, use <code>+1(phone number)</code>.</span>
-  {% if accept_msg %}
-    {{ accept_msg }}
-  {% endif %}
-  <form method="post" action="{{ url_for('accept') }}">
-    <input type="text" name="contact" placeholder="+18880008888 or wallawallabingbang@gmail.com">
-    <input type="hidden" name="__safety_key" value="{{ __safety_key }}">
-    <input type="submit">
-  </form>
-</section>
-<section class="step">
-  <span class="big-bg">2</span>
-  <p>2. Download the iOS app, and enter token displayed on the app homepage, below:</p>
-  {% if token_msg %}
-    {{ token_msg }}
-  {% endif %}
-  <form action="{{ url_for('token') }}" method="post">
-    <input type="text" name="token">
-    <input type="hidden" name="__safety_key" value="{{ __safety_key }}">
-    <input type="submit">
-  </form>
-</section>
-<section class="step">
-  <p>3. <a href="{{ url_for('monitor') }}">Start monitoring</a></p>
-</section>
+<main class="steps-container">
+  <section class="steps">
+    <div class="step">
+      <p>1. To view live feeds, add your phone number or email</p>
+      <span>For phone numbers, add your country code. For the US, use <code>+1(phone number)</code>.</span>
+      {% if accept_msg %}
+        {{ accept_msg }}
+      {% endif %}
+      <form method="post" action="{{ url_for('accept') }}">
+        <input type="text" name="contact" placeholder="+18880008888 or wallawallabingbang@gmail.com" value="{{ accept[-1] }}">
+        <input type="hidden" name="__safety_key" value="{{ __safety_key }}">
+        <input type="submit">
+      </form>
+    </div>
+    <div class="step">
+      <p>2. Download the iOS app, and enter token displayed on the app homepage, below:</p>
+      {% if token_msg %}
+        {{ token_msg }}
+      {% endif %}
+      <form action="{{ url_for('token') }}" method="post">
+        <input type="text" name="token" value="{{ token }}">
+        <input type="hidden" name="__safety_key" value="{{ __safety_key }}">
+        <input type="submit">
+      </form>
+    </div>
+    <div class="step">
+      <p>3. Get started!</p>
+        <a href="{{ url_for('monitor') }}" class="button">Start monitoring</a>
+    </div>
+  </section>
+</main>
 {% endblock %}
