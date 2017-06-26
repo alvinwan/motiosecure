@@ -5,7 +5,7 @@
   <body>
     <p>1. To view live feeds, add your phone number or email</p>
     <span>For phone numbers, add your country code. For the US, use <code>+1(phone number)</code>.</span>
-    {{ autoaccept_msg }}
+    {{ accept_msg }}
     <form method="post" action="{{ url_for('accept') }}">
       <input type="text" name="value" placeholder="+18880008888 or wallawallabingbang@gmail.com">
       <input type="hidden" name="__safety_key" value="{{ __safety_key }}">

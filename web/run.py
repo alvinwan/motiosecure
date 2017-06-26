@@ -29,10 +29,7 @@ app = Flask(__name__)
 motion_detected = False
 __safety_key = random.getrandbits(128)
 __used_safety_keys = {}
-LOG_DIR = 'logs/%s' % random.randint(10000, 99999)
-PORT = 6789
 
-os.makedirs(LOG_DIR, exist_ok=True)
 
 ################
 # CUSTOM HOOKS #
@@ -79,7 +76,7 @@ def render_template(template_name: str, **kwargs):
 def index():
     return render_template(
         'index.html',
-        autoaccept_msg=request.args.get('accept_msg', ''),
+        accept_msg=request.args.get('accept_msg', ''),
         token_msg=request.args.get('token_msg', ''))
 
 
@@ -104,7 +101,7 @@ def token():
 
 @app.route("/monitor")
 def monitor():
-    t = threading.Thread(target=watch)
+    t = threading.Thread(target=monitor)
     t.start()
     return render_template('monitor.html', port=PORT)
 
@@ -135,7 +132,8 @@ class MotionDetector:
         return total_explained_variance > self.threshold
 
 
-def watch():
+def monitor():
+    """Monitor the camera for motion and call the appropriate hooks."""
     global motion_detected
     capture = cv2.VideoCapture(0)
     if capture is None or not capture.isOpened():
@@ -197,14 +195,32 @@ class Config:
         config.data['key'] = 'some value'
     """
 
-    def __init__(self, path: str='config.json'):
+    def __init__(self,
+            path: str='config.json',
+            default_log_dir: str='logs',
+            default_port: int=5678):
+        """
+        Note that the default kwargs will not take effect if the associated
+        keys already exist in the config file."""
         self.path = path
+        self.defaults = {
+            'log_dir': default_log_dir,
+            'default_port': default_port
+        }
         if not os.path.exists(path):
-            json.dump({}, open(path, 'w'))
+            json.dump(self.defaults, open(path, 'w'))
 
     def __enter__(self):
+        """Read the configuration file.
+
+        Populate the configuration with default values if necessary.
+        Additionally ensure that the log directory exists.
+        """
         with open(self.path, 'r') as f:
             self.data = json.load(f)
+        os.makedirs(self.data['log_dir'], exist_ok=True)
+        for key, value in self.defaults.items():
+            self.data[key] = self.data.get(key, value)
 
     def __exit__(self):
         with open(self.path, 'w') as f:
@@ -246,7 +262,8 @@ class VideoWritingManager:
         """Start a new video path at some path, selected as function of time."""
         with Config() as config:
             send_ios_notification(config.data['token'])
-        video_path = os.path.join(LOG_DIR, 'video%s.mp4' % time.time())
+            video_path = os.path.join(
+                config.data['log_dir'], 'video%s.mp4' % time.time())
         width, height, _ = image.shape
         self.writer = cv2.VideoWriter(
             video_path,
