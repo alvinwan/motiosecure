@@ -3,18 +3,31 @@
 MotioSecure Monitor
 {% endblock %}
 {% block content %}
-<p>Monitoring started
-<ul>
-    <li>Motion Detected: <span id="detected"></span></li>
-</ul>
-<script>
-    window.onload = function() {
-        var ws = new WebSocket("ws://127.0.0.1:{{ port }}/");
-        var status = document.getElementById('detected');
-        ws.onmessage = function (event) {
-            status.innerHTML = event.data;
-            console.log(event.data);
-        };
-    }
-</script>
+<main class="content-container">
+  <div class="content">
+    <p>Monitoring has started successfully. Notifications will be sent to your phone if motion is detected.</p>
+    <span id="detected" class="button full"></span>
+    <p class="help"><a href="/">&laquo; Stop Monitoring</a></p>
+    <script>
+        window.onload = function() {
+            var ws = new WebSocket("ws://127.0.0.1:{{ port }}/");
+            var status = document.getElementById('detected');
+            var originalClassName = status.className;
+            ws.onmessage = function (event) {
+                if (event.data == 'True') {
+                  status.innerHTML = 'motion detected';
+                  status.className = originalClassName;
+                } else if (event.data == 'False') {
+                  status.innerHTML = 'No motion detected';
+                  status.className = originalClassName + ' inactive';
+                } else {
+                  status.innerHTML = event.data;
+                  status.className = originalClassName + ' inactive';
+                }
+                console.log(event.data);
+            };
+        }
+    </script>
+  </div>
+</main>
 {% endblock %}

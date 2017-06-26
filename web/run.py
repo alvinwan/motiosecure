@@ -29,7 +29,8 @@ app = Flask(__name__)
 motion_detected = False
 __safety_key = random.getrandbits(128)
 __used_safety_keys = set()
-
+__num_monitor_threads = 0
+__should_stop_thread = False
 
 ################
 # CUSTOM HOOKS #
@@ -79,6 +80,9 @@ def render_template(template_name: str, **kwargs):
 
 @app.route("/")
 def index():
+    global __num_monitor_threads, __should_stop_thread
+    if __num_monitor_threads > 0:
+        __should_stop_thread = True
     return render_template(
         'index.html',
         accept_msg=request.args.get('accept_msg', ''),
@@ -106,8 +110,11 @@ def token():
 
 @app.route("/monitor")
 def monitor():
-    t = threading.Thread(target=monitor)
-    t.start()
+    global __num_monitor_threads, __should_stop_thread
+    if __num_monitor_threads == 0:
+        __should_stop_thread = False
+        threading.Thread(target=monitor).start()
+        __num_monitor_threads += 1
     with Config() as config:
         return render_template('monitor.html', port=config['port'])
 
@@ -142,7 +149,7 @@ class MotionDetector:
 
 def monitor():
     """Monitor the camera for motion and call the appropriate hooks."""
-    global motion_detected
+    global motion_detected, __num_monitor_threads, __should_stop_thread
     capture = cv2.VideoCapture(0)
     if capture is None or not capture.isOpened():
         print('Warning: unable to open video source: ', source)
@@ -155,6 +162,11 @@ def monitor():
         motion_detected = motion_detector.is_motion_detected(image)
         video_manager.on_process_image(image, motion_detected)
 
+        if __should_stop_thread:
+            __num_monitor_threads -= 1
+            print('* [Info] Stopping monitor...')
+            break
+
 
 def start_socket():
     """Launch new socket to provide live motion updates to web interface."""
@@ -165,15 +177,27 @@ def start_socket():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
-
+    try:
+        asyncio.get_event_loop().run_forever()
+    except asyncio.CancelledError:
+        print('* [Info] All tasks cancelled.')
+    finally:
+        loop.close()
 
 async def send_detections(websocket, path):
     """Sends latest status update to web interface, through socket."""
-    global motion_detected
+    global motion_detected, __should_stop_thread
     while True:
         await websocket.send(str(motion_detected))
         await asyncio.sleep(0.1)
+
+        if __should_stop_thread:
+            await websocket.send('Monitor shutting down')
+            print('* [Info] Stopping socket...')
+            asyncio.get_event_loop().stop()
+            for task in asyncio.Task.all_tasks():
+                task.cancel()
+            break
 
 
 def send_ios_notification(token: str):
