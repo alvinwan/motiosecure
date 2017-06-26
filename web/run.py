@@ -28,7 +28,7 @@ app = Flask(__name__)
 
 motion_detected = False
 __safety_key = random.getrandbits(128)
-__used_safety_keys = {}
+__used_safety_keys = set()
 
 
 ################
@@ -44,7 +44,7 @@ def filter_post_requests():
     2) Checks that the safety key is consistent with the last generated.
     """
     global __safety_key
-    if request.method == 'POST': and (
+    if request.method == 'POST' and (
             request.remote_addr != '127.0.0.1' or \
             int(request.form['__safety_key']) != __safety_key):
         abort(403)
@@ -52,13 +52,16 @@ def filter_post_requests():
 
 
 @app.after_request
-def regenerate_safety_key():
+def regenerate_safety_key(response):
     """
     Generate a new safety key after each request to prevent network spies
     from reusing safety keys.
     """
     global __safety_key
-    __safety_key = random.getrandbits(128)
+    if isinstance(response.response, list) and \
+            b'__safety_key' not in response.response[0]:
+        __safety_key = random.getrandbits(128)
+    return response
 
 
 def render_template(template_name: str, **kwargs):
@@ -83,19 +86,19 @@ def index():
 @app.route("/accept", methods=['POST'])
 def accept():
     """Add new contact to list of 'Facetime auto-accept' whitelist."""
-    call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [request.form['value']])
+    call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [request.form['contact']])
     with Config() as config:
-        if 'accept' not in config.data:
-            config.data['accept'] = []
-        config.data['accept'].append(request.form['token'])
-    return redirect(url_for('index', autoaccept_msg='Successfully added' + request.form['value']))
+        if 'accept' not in config:
+            config['accept'] = []
+        config['accept'].append(request.form['contact'])
+    return redirect(url_for('index', accept_msg='Successfully added' + request.form['contact']))
 
 
 @app.route("/token", methods=['POST'])
 def token():
     """Set device-specific token as current app's target for notifications."""
     with Config() as config:
-        config.data['token'] = request.form['token']
+        config['token'] = request.form['token']
     return redirect(url_for('index', token_msg='Successfully added token:' + request.form['token']))
 
 
@@ -103,7 +106,8 @@ def token():
 def monitor():
     t = threading.Thread(target=monitor)
     t.start()
-    return render_template('monitor.html', port=PORT)
+    with Config() as config:
+        return render_template('monitor.html', port=config['port'])
 
 
 ####################
@@ -121,14 +125,16 @@ class MotionDetector:
         self.buffer_length = buffer_length
         self.images = deque(maxlen=buffer_length)
         self.svd = TruncatedSVD(n_components=n_svd_components)
+        self.threshold = threshold
 
     def is_motion_detected(self, image: np.array) -> bool:
         """Check if motion is detected."""
-        if len(images) < self.buffer_length:
+        self.images.append(image)
+        if len(self.images) < self.buffer_length:
             return False
-        difference = np.mean(image - images[-self.buffer_length.+1], axis=2)
-        svd.fit(difference)
-        total_explained_variance = svd.explained_variance_ratio_.sum()
+        difference = np.mean(image - self.images[-self.buffer_length+1], axis=2)
+        self.svd.fit(difference)
+        total_explained_variance = self.svd.explained_variance_ratio_.sum()
         return total_explained_variance > self.threshold
 
 
@@ -146,12 +152,13 @@ def monitor():
         _, image = capture.read()
         motion_detected = motion_detector.is_motion_detected(image)
         video_manager.on_process_image(image, motion_detected)
-        images.append(image)
 
 
 def start_socket():
     """Launch new socket to provide live motion updates to web interface."""
-    start_server = websockets.serve(send_detections, '127.0.0.1', PORT)
+    with Config() as config:
+        start_server = websockets.serve(
+            send_detections, '127.0.0.1', config['port'])
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -176,9 +183,6 @@ def send_ios_notification(token: str):
         alert="Motion detected", sound="default", badge=1, mutable_content=True)
     apns.gateway_server.send_notification(token, payload)
 
-t = threading.Thread(target=start_socket)
-t.start()
-
 
 #############
 # UTILITIES #
@@ -192,7 +196,7 @@ class Config:
     config object using a with statement.
 
     with Config() as config:
-        config.data['key'] = 'some value'
+        config['key'] = 'some value'
     """
 
     def __init__(self,
@@ -205,10 +209,11 @@ class Config:
         self.path = path
         self.defaults = {
             'log_dir': default_log_dir,
-            'default_port': default_port
+            'port': default_port
         }
         if not os.path.exists(path):
-            json.dump(self.defaults, open(path, 'w'))
+            with open(path, 'w') as f:
+                json.dump(self.defaults, f)
 
     def __enter__(self):
         """Read the configuration file.
@@ -218,13 +223,14 @@ class Config:
         """
         with open(self.path, 'r') as f:
             self.data = json.load(f)
-        os.makedirs(self.data['log_dir'], exist_ok=True)
         for key, value in self.defaults.items():
             self.data[key] = self.data.get(key, value)
+        os.makedirs(self.data['log_dir'], exist_ok=True)
+        return self.data
 
-    def __exit__(self):
+    def __exit__(self, *args):
         with open(self.path, 'w') as f:
-            json.dump(f)
+            json.dump(self.data, f)
 
 
 class VideoWritingManager:
@@ -235,7 +241,7 @@ class VideoWritingManager:
     """
 
 
-    class __init__(self,
+    def __init__(self,
             encoding: str='MP4V',
             fps: int=10,
             max_pause_duration: int=2):
@@ -261,12 +267,16 @@ class VideoWritingManager:
     def start_new_writer(self, image: np.array):
         """Start a new video path at some path, selected as function of time."""
         with Config() as config:
-            send_ios_notification(config.data['token'])
+            send_ios_notification(config['token'])
             video_path = os.path.join(
-                config.data['log_dir'], 'video%s.mp4' % time.time())
+                config['log_dir'], 'video%s.mp4' % time.time())
         width, height, _ = image.shape
         self.writer = cv2.VideoWriter(
             video_path,
             cv2.VideoWriter_fourcc(*self.encoding),
             self.fps,
             (height, width))
+
+
+t = threading.Thread(target=start_socket)
+t.start()
