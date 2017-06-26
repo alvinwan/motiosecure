@@ -3,6 +3,7 @@ from apns import Frame
 from apns import Payload
 from flask import request
 from flask import abort
+from flask import render_template as flask_render_template
 from subprocess import call
 from flask import Flask
 from flask import url_for
@@ -26,49 +27,81 @@ import json
 app = Flask(__name__)
 
 motion_detected = False
-autoaccept_key = random.getrandbits(128)
+__safety_key = random.getrandbits(128)
+__used_safety_keys = {}
 DEQUE_LENGTH = 10
 THRESHOLD = 0.1
 LOG_DIR = 'logs/%s' % random.randint(10000, 99999)
 MAX_FALSE_DURATION = 2  # maximum duration between periods of motion detection, for videos to be strung together (in seconds)
 PORT = 6789
 
-if not os.path.exists(CONFIG_PATH):
-    json.dump({}, open(CONFIG_PATH, 'w'))
 os.makedirs(LOG_DIR, exist_ok=True)
+
+################
+# CUSTOM HOOKS #
+################
+
+
+@app.before_request
+def filter_post_requests():
+    """Rudimentary checks for valid POST requests. ~Don't depend on this!~
+
+    1) Checks that the IP address is localhost. (Note: this can be spoofed)
+    2) Checks that the safety key is consistent with the last generated.
+    """
+    global __safety_key
+    if request.method == 'POST': and (
+            request.remote_addr != '127.0.0.1' or \
+            int(request.form['__safety_key']) != __safety_key):
+        abort(403)
+    __used_safety_keys.add(__safety_key)
+
+
+@app.after_request
+def regenerate_safety_key():
+    """
+    Generate a new safety key after each request to prevent network spies
+    from reusing safety keys.
+    """
+    global __safety_key
+    __safety_key = random.getrandbits(128)
+
+
+def render_template(template_name: str, **kwargs):
+    """Add the current safety key for template rendering."""
+    kwargs['__safety_key'] = __safety_key
+    return flask_render_template(template_name, **kwargs)
+
+
+#############
+# WEB VIEWS #
+#############
 
 
 @app.route("/")
 def index():
-    autoaccept_msg = request.args.get('autoaccept_msg', '')
-    token_msg = request.args.get('token_msg', '')
-    return '<p>1. To view live feeds, add your phone number or email</p><span>For phone numbers, add your country code. For the US, use +1<phone number>.</span>%s<form method="post" action="/autoaccept"><input type="text" name="value" placeholder="+18880008888 or wallawallabingbang@gmail.com"><input type="hidden" name="key" value="%s"><input type="submit"></form><p>2. Download the iOS app, and enter token displayed on the app homepage, below:</p>%s<form action="/token" method="post"><input type="text" name="token"><input type="hidden" name="key" value="%s"><input type="submit"></form><p>3. <a href="%s">Start monitoring"</a></p>' % (autoaccept_msg, autoaccept_key, token_msg, autoaccept_key, url_for('monitor'))
+    return render_template(
+        'index.html',
+        autoaccept_msg=request.args.get('accept_msg', ''),
+        token_msg=request.args.get('token_msg', ''))
 
 
-@app.route("/autoaccept", methods=['POST'])
+@app.route("/accept", methods=['POST'])
 def accept():
-    global autoaccept_key
-    if request.remote_addr != '127.0.0.1' or \
-            int(request.form['key']) != autoaccept_key:
-        abort(403)
+    """Add new contact to list of 'Facetime auto-accept' whitelist."""
     call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [request.form['value']])
     with Config() as config:
-        if 'autoaccept' not in config.data:
-            config.data['autoaccept'] = []
-        config.data['autoaccept'].append(request.form['token'])
-    autoaccept_key = random.getrandbits(128)
+        if 'accept' not in config.data:
+            config.data['accept'] = []
+        config.data['accept'].append(request.form['token'])
     return redirect(url_for('index', autoaccept_msg='Successfully added' + request.form['value']))
 
 
 @app.route("/token", methods=['POST'])
 def token():
-    global autoaccept_key
-    if request.remote_addr != '127.0.0.1' or \
-            int(request.form['key']) != autoaccept_key:
-        abort(403)
+    """Set device-specific token as current app's target for notifications."""
     with Config() as config:
         config.data['token'] = request.form['token']
-    autoaccept_key = random.getrandbits(128)
     return redirect(url_for('index', token_msg='Successfully added token:' + request.form['token']))
 
 
@@ -76,31 +109,12 @@ def token():
 def monitor():
     t = threading.Thread(target=watch)
     t.start()
-    return """
-    <!DOCTYPE html>
-<html>
-    <head>
-        <title>WebSocket demo</title>
-    </head>
-    <body>
-        <p>Monitoring started
-        <ul>
-            <li>Motion Detected: <span id="detected"></span></li>
-        </ul>
-        <script>
-            window.onload = function() {
-                var ws = new WebSocket("ws://127.0.0.1:%d/");
-                var status = document.getElementById('detected');
-                ws.onmessage = function (event) {
-                    status.innerHTML = event.data;
-                    console.log(event.data);
-                };
-            }
-        </script>
-    </body>
-</html>
-""" % PORT
+    return render_template('monitor.html', port=PORT)
 
+
+####################
+# MOTION DETECTION #
+####################
 
 def watch():
     global motion_detected
@@ -148,7 +162,9 @@ def watch():
                 false_start = time.time()
         images.append(image)
 
+
 def start_socket():
+    """Launch new socket to provide live motion updates to web interface."""
     start_server = websockets.serve(send_detections, '127.0.0.1', PORT)
 
     loop = asyncio.new_event_loop()
@@ -158,6 +174,7 @@ def start_socket():
 
 
 async def send_detections(websocket, path):
+    """Sends latest status update to web interface, through socket."""
     global motion_detected
     while True:
         await websocket.send(str(motion_detected))
@@ -165,6 +182,7 @@ async def send_detections(websocket, path):
 
 
 def send_ios_notification(token: str):
+    """Sends 'motion detected' notification to iOS device."""
     apns = APNs(use_sandbox=True, cert_file='bundle.pem', key_file='bundle.pem')
 
     # Send a notification
@@ -174,6 +192,11 @@ def send_ios_notification(token: str):
 
 t = threading.Thread(target=start_socket)
 t.start()
+
+
+#############
+# UTILITIES #
+#############
 
 
 class Config:
@@ -190,6 +213,8 @@ class Config:
 
     def __init__(self, path: str=DEFAULT_PATH):
         self.path = path
+        if not os.path.exists(path):
+            json.dump({}, open(path, 'w'))
 
     def __enter__(self):
         with open(self.path, 'r') as f:

@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>MotioSecure Homepage</title>
+  </head>
+  <body>
+    <p>1. To view live feeds, add your phone number or email</p>
+    <span>For phone numbers, add your country code. For the US, use <code>+1(phone number)</code>.</span>
+    {{ autoaccept_msg }}
+    <form method="post" action="{{ url_for('accept') }}">
+      <input type="text" name="value" placeholder="+18880008888 or wallawallabingbang@gmail.com">
+      <input type="hidden" name="__safety_key" value="{{ __safety_key }}">
+      <input type="submit">
+    </form>
+    <p>2. Download the iOS app, and enter token displayed on the app homepage, below:</p>
+    {{ token_msg }}
+    <form action="{{ url_for('token') }}" method="post">
+      <input type="text" name="token">
+      <input type="hidden" name="__safety_key" value="{{ __safety_key }}">
+      <input type="submit"></form>
+    <p>3. <a href="{{ url_for('monitor') }}">Start monitoring</a></p>
+  </body>
+</html>

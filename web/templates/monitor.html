@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>MotioSecure Monitor</title>
+  </head>
+  <body>
+      <p>Monitoring started
+      <ul>
+          <li>Motion Detected: <span id="detected"></span></li>
+      </ul>
+      <script>
+          window.onload = function() {
+              var ws = new WebSocket("ws://127.0.0.1:{{ port }}/");
+              var status = document.getElementById('detected');
+              ws.onmessage = function (event) {
+                  status.innerHTML = event.data;
+                  console.log(event.data);
+              };
+          }
+      </script>
+  </body>
+</html>
