@@ -29,10 +29,7 @@ app = Flask(__name__)
 motion_detected = False
 __safety_key = random.getrandbits(128)
 __used_safety_keys = {}
-DEQUE_LENGTH = 10
-THRESHOLD = 0.1
 LOG_DIR = 'logs/%s' % random.randint(10000, 99999)
-MAX_FALSE_DURATION = 2  # maximum duration between periods of motion detection, for videos to be strung together (in seconds)
 PORT = 6789
 
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -116,50 +113,41 @@ def monitor():
 # MOTION DETECTION #
 ####################
 
+
+class MotionDetector:
+    """Manages motion detection."""
+
+    def __init__(self,
+            buffer_length: int=10,
+            n_svd_components: int=5,
+            threshold: int=0.1):
+        self.buffer_length = buffer_length
+        self.images = deque(maxlen=buffer_length)
+        self.svd = TruncatedSVD(n_components=n_svd_components)
+
+    def is_motion_detected(self, image: np.array) -> bool:
+        """Check if motion is detected."""
+        if len(images) < self.buffer_length:
+            return False
+        difference = np.mean(image - images[-self.buffer_length.+1], axis=2)
+        svd.fit(difference)
+        total_explained_variance = svd.explained_variance_ratio_.sum()
+        return total_explained_variance > self.threshold
+
+
 def watch():
     global motion_detected
     capture = cv2.VideoCapture(0)
     if capture is None or not capture.isOpened():
         print('Warning: unable to open video source: ', source)
 
-    images = deque(maxlen=DEQUE_LENGTH)
-    svd = TruncatedSVD(n_components=5)
-    writer = None
-    false_start = time.time()
-
-    config = json.load(open(CONFIG_PATH, 'r'))
+    motion_detector = MotionDetector()
+    video_manager = VideoWritingManager()
 
     while True:
         _, image = capture.read()
-        if len(images) > DEQUE_LENGTH - 1:
-            difference = np.mean(image - images[-DEQUE_LENGTH+1], axis=2)
-            svd.fit(difference)
-            total_explained_variance = svd.explained_variance_ratio_.sum()
-            previous_motion_detected = motion_detected
-            motion_detected = total_explained_variance > THRESHOLD
-            if not previous_motion_detected and motion_detected:
-                now = time.time()
-                if writer and now - false_start > MAX_FALSE_DURATION:
-                    writer.release()
-                    new_video = True
-                elif writer:
-                    new_video = False
-                else:
-                    new_video = True
-
-                if new_video:
-                    send_ios_notification(config['token'])
-                    video_path = os.path.join(LOG_DIR, 'video%s.mp4' % time.time())
-                    width, height, _ = image.shape
-                    writer = cv2.VideoWriter(
-                        video_path,
-                        cv2.VideoWriter_fourcc(*'MP4V'),
-                        10,
-                        (height, width))
-            if writer:
-                writer.write(image)
-            if previous_motion_detected and not motion_detected and writer:
-                false_start = time.time()
+        motion_detected = motion_detector.is_motion_detected(image)
+        video_manager.on_process_image(image, motion_detected)
         images.append(image)
 
 
@@ -209,9 +197,7 @@ class Config:
         config.data['key'] = 'some value'
     """
 
-    DEFAULT_PATH = 'config.json'
-
-    def __init__(self, path: str=DEFAULT_PATH):
+    def __init__(self, path: str='config.json'):
         self.path = path
         if not os.path.exists(path):
             json.dump({}, open(path, 'w'))
@@ -223,3 +209,47 @@ class Config:
     def __exit__(self):
         with open(self.path, 'w') as f:
             json.dump(f)
+
+
+class VideoWritingManager:
+    """Handles writing a video for periods of detected motion.
+
+    Additionally ensures that reasonably close periods of motion are lumped
+    together into a single video.
+    """
+
+
+    class __init__(self,
+            encoding: str='MP4V',
+            fps: int=10,
+            max_pause_duration: int=2):
+        self.false_start = time.time()
+        self.encoding = encoding
+        self.fps = fps
+        self.previous_motion_detected = False
+        self.writer = None
+
+    def on_process_image(self, image: np.array, motion_detected: bool):
+        """Hook for every new image processed.
+
+        Determines whether or not to start a new video.
+        """
+        now = time.time()
+        if not self.previous_motion_detected and motion_detected:
+            if self.writer and now - self.false_start > self.max_pause_duration:
+                self.start_new_writer(image)
+                self.false_start = now
+            if self.writer:
+                self.writer.write(image)
+
+    def start_new_writer(self, image: np.array):
+        """Start a new video path at some path, selected as function of time."""
+        with Config() as config:
+            send_ios_notification(config.data['token'])
+        video_path = os.path.join(LOG_DIR, 'video%s.mp4' % time.time())
+        width, height, _ = image.shape
+        self.writer = cv2.VideoWriter(
+            video_path,
+            cv2.VideoWriter_fourcc(*self.encoding),
+            self.fps,
+            (height, width))
