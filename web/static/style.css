@@ -4,6 +4,7 @@
 
 a {
   text-decoration:inherit;
+  display:inline-block;
 }
 
 .steps-container,.content-container {
@@ -17,7 +18,7 @@ a {
 .steps,.content {
   text-align:left;
   width:30em;
-  padding:5em 5em 7.5em 5em;
+  padding:3em 5em 5em 5em;
   display:inline-block;
   float:none;
   background-color:#FFF;
@@ -53,6 +54,10 @@ input[type="submit"],.button {
   width:100%;
   display:block;
   font-size:1.1em;
+}
+
+span + .button {
+  margin-top:2em;
 }
 
 .help {

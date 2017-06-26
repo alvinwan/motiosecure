@@ -202,6 +202,7 @@ async def send_detections(websocket, path):
 
 def send_ios_notification(token: str):
     """Sends 'motion detected' notification to iOS device."""
+    print(' * [Info] Sending iOS notification')
     apns = APNs(use_sandbox=True, cert_file='bundle.pem', key_file='bundle.pem')
 
     # Send a notification
@@ -274,6 +275,7 @@ class VideoWritingManager:
         self.false_start = time.time()
         self.encoding = encoding
         self.fps = fps
+        self.max_pause_duration = max_pause_duration
         self.previous_motion_detected = False
         self.writer = None
 
@@ -284,14 +286,17 @@ class VideoWritingManager:
         """
         now = time.time()
         if not self.previous_motion_detected and motion_detected:
-            if self.writer and now - self.false_start > self.max_pause_duration:
+            long_enough = now - self.false_start > self.max_pause_duration
+            if (self.writer and long_enough) or not self.writer:
                 self.start_new_writer(image)
                 self.false_start = now
             if self.writer:
                 self.writer.write(image)
+        self.previous_motion_detected = motion_detected
 
     def start_new_writer(self, image: np.array):
         """Start a new video path at some path, selected as function of time."""
+        print(' * [Info] Start new video writer.')
         with Config() as config:
             send_ios_notification(config['token'])
             video_path = os.path.join(
