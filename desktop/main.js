@@ -8,7 +8,7 @@ const path = require('path')
  * py process
  *************************************************************/
 
-const PY_DIST_FOLDER = 'motiosecuredist'
+const PY_DIST_FOLDER = 'dist'
 const PY_FOLDER = 'motiosecure'
 const PY_MODULE = 'api' // without .py suffix
 
@@ -48,6 +48,17 @@ const createPyProc = () => {
   if (pyProc != null) {
     //console.log(pyProc)
     console.log('child process success on port ' + port)
+    pyProc.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    pyProc.stderr.on('data', (data) => {
+      console.log(`stderr: ${data}`);
+    });
+
+    pyProc.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
   }
 }
 

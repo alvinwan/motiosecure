@@ -7,6 +7,7 @@ build
 **/config.json
 **/logs
 node_modules
+MotioSecure-darwin-x64
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -527,6 +527,7 @@
 				A54E189F1EFF8F99009409FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A54E18A01EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecureTests" */ = {
 			isa = XCConfigurationList;
@@ -535,6 +536,7 @@
 				A54E18A21EFF8F99009409FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A54E18A31EFF8F99009409FE /* Build configuration list for PBXNativeTarget "MotioSecureUITests" */ = {
 			isa = XCConfigurationList;
@@ -543,6 +545,7 @@
 				A54E18A51EFF8F99009409FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
