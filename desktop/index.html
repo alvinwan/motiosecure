@@ -13,20 +13,20 @@ MotioSecure Homepage
     <div class="step">
       <p>1. To view live feeds, add your phone number or email</p>
       <span>For phone numbers, add your country code. For the US, use <code>+1(phone number)</code>.</span>
+      <p id="accept-result"></p>
 
-      <form method="post" action="/accept">
-        <input type="text" name="contact" placeholder="+18880008888 or wallawallabingbang@gmail.com" value="">
-        <input type="hidden" name="__safety_key" value="">
-        <input id="accept-submit" type="submit">
+      <form id="accept-form">
+        <input id="accept-value" type="text" name="contact" placeholder="+18880008888 or wallawallabingbang@gmail.com" value="">
+        <input type="submit" value="submit">
       </form>
     </div>
     <div class="step">
       <p>2. Download the iOS app, and enter token displayed on the app homepage, below:</p>
+      <p id="token-result"></p>
 
-      <form action="/token" method="post">
-        <input type="text" name="token" value="">
-        <input type="hidden" name="__safety_key" value="">
-        <input id="token-submit" type="submit">
+      <form id="token-form">
+        <input id="token-value" type="text" name="token" value="">
+        <input type="submit" value="submit">
       </form>
     </div>
     <div class="step">
