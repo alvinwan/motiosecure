@@ -1,6 +1,10 @@
 # MotioSecure iOS Application
 
-# Installing
+**Coming soon: Install from the Mac app store**
+
+# Development
+
+Launch the `iOS` directory in XCode. Change the bundle ID and follow installation instructions in the iOS README [`ios/README.md`](https://github.com/alvinwan/motiosecure/tree/master/ios).
 
 Start by following this  [tutorial](https://www.raywenderlich.com/156966/push-notifications-tutorial-getting-started).
 
