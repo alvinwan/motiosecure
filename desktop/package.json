@@ -1,0 +1,25 @@
+{
+  "name": "MotioSecure",
+  "version": "1.0.0",
+  "description": "A minimal Electron and Python - based motion detection app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/alvinwan/motiosecure",
+  "keywords": [
+    "Electron",
+    "Python",
+    "zerorpc",
+    "demo"
+  ],
+  "author": "fyears",
+  "license": "MIT",
+  "dependencies": {
+    "zerorpc": "^0.9.7"
+  },
+  "devDependencies": {
+    "electron": "^1.4.1",
+    "electron-packager": "^8.5.1"
+  }
+}

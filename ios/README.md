@@ -1,4 +1,4 @@
-# MotioSecure on iOS
+# MotioSecure iOS Application
 
 # Installing
 

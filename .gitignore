@@ -1,9 +1,12 @@
+dist
+build
 *.pem
 **/*.pem
 *.mobileprovision
 *.csr
 **/config.json
 **/logs
+node_modules
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

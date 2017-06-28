@@ -1,4 +1,4 @@
-# Motiosecure
+# MotioSecure
 Simple security platform with motion detection implementation for cheap, low-quality camera lens
 
 **Mac and iOS apps are coming soon**

@@ -1,0 +1,84 @@
+* {
+  font-family:'Work Sans';
+}
+
+a {
+  text-decoration:inherit;
+  display:inline-block;
+}
+
+.steps-container,.content-container {
+  width:100%;
+  min-height:100%;
+  text-align:center;
+  background-color:#eee;
+  padding:5em 0;
+}
+
+.steps,.content {
+  text-align:left;
+  width:30em;
+  padding:3em 5em 5em 5em;
+  display:inline-block;
+  float:none;
+  background-color:#FFF;
+  border-radius:1em;
+  box-sizing:border-box;
+}
+
+input[type="text"] {
+  width:100%;
+  margin:1em 0;
+  font-size:1em;
+  border-radius:0.25em;
+  outline:none;
+  background-color:#eee;
+  border:none;
+  padding:0.5em;
+}
+
+input[type="submit"],.button {
+  font-size:0.8em;
+  background-color:#b73a3a;
+  color:#FFF;
+  border-radius:0.25em;
+  padding:1em 2em;
+  box-sizing:border-box;
+  outline:none;
+  border:none;
+  cursor:pointer;
+  text-align:center;
+}
+
+.button.full {
+  width:100%;
+  display:block;
+  font-size:1.1em;
+}
+
+span + .button {
+  margin-top:2em;
+}
+
+.help {
+  width:100%;
+  text-align:center;
+}
+
+.help a {
+  color:#999;
+}
+
+.button.inactive,.button.inactive:hover {
+  cursor:auto;
+  color:#666;
+  background-color:#ccc;
+}
+
+input[type="submit"]:hover,.button:hover {
+  background-color:#962f2f;
+}
+
+span {
+  color:#999;
+}
