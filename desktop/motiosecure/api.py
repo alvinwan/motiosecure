@@ -28,14 +28,14 @@ class MotioSecureApi:
     num_monitor_threads = 0
     should_stop_thread = False
 
-    def accept(self, contact: str):
+    def accept(self, contact: str, fs_dir: str):
         """Add contact information to auto-accept whitelist.
 
         :param contact: Phone number preceded by country code or email address
                         associated with an iCloud account. Leave empty to get
                         first contact.
         """
-        with Config() as config:
+        with Config(fs_dir) as config:
             if not contact:
                 return config.get('accept', [''])[0]
             if 'accept' not in config:
@@ -44,40 +44,38 @@ class MotioSecureApi:
         call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [contact])
         return 'Successfully added contact'
 
-    def token(self, token: str):
+    def token(self, token: str, fs_dir: str):
         """Add new mobile device token to configuration.
 
         :param token: String hex code taken from the iOS application. Leave
                       empty to get token.
         """
-        with Config() as config:
+        with Config(fs_dir) as config:
             if not token:
                 return config['token']
             config['token'] = token
         return 'Successfully added token'
 
-    def monitor(self):
+    def monitor(self, fs_dir: str):
         if MotioSecureApi.num_monitor_threads == 0:
             MotioSecureApi.should_stop_thread = False
-            threading.Thread(target=monitor).start()
+            threading.Thread(target=monitor, args=(fs_dir,)).start()
             MotioSecureApi.num_monitor_threads += 1
             return 'Stop monitoring'
         else:
             MotioSecureApi.should_stop_thread = True
             return 'Start monitoring'
 
-    def echo(self, text: str) -> str:
-        return text
+    def onstart(self, fs_dir: str) -> str:
+        threading.Thread(target=start_socket, args=(fs_dir,)).start()
+        return "server ready"
 
 
 def main():
-    threading.Thread(target=start_socket).start()
-
     s = zerorpc.Server(MotioSecureApi())
     s.bind('tcp://127.0.0.1:4242')
-    print('start running on 4242')
+    print('* [Info] Start running zmq on 4242')
     s.run()
-
 
 
 # The following was taken from the `web/` interface. This code should mirror
@@ -112,7 +110,7 @@ class MotionDetector:
         return total_explained_variance > self.threshold
 
 
-def monitor():
+def monitor(fs_dir: str):
     """Monitor the camera for motion and call the appropriate hooks."""
     global motion_detected
     capture = cv2.VideoCapture(0)
@@ -120,7 +118,7 @@ def monitor():
         print('Warning: unable to open video source: ', source)
 
     motion_detector = MotionDetector()
-    video_manager = VideoWritingManager()
+    video_manager = VideoWritingManager(fs_dir)
 
     while True:
         _, image = capture.read()
@@ -133,9 +131,9 @@ def monitor():
             break
 
 
-def start_socket():
+def start_socket(fs_dir: str):
     """Launch new socket to provide live motion updates to web interface."""
-    with Config() as config:
+    with Config(fs_dir) as config:
         start_server = websockets.serve(
             send_detections, '127.0.0.1', config['port'])
 
@@ -180,19 +178,21 @@ class Config:
     """
 
     def __init__(self,
+            fs_dir: str='./',
             path: str='config.json',
             default_log_dir: str='logs',
             default_port: int=5678):
         """
         Note that the default kwargs will not take effect if the associated
         keys already exist in the config file."""
-        self.path = path
+        self.path = os.path.join(fs_dir, path)
         self.defaults = {
-            'log_dir': default_log_dir,
-            'port': default_port
+            'log_dir': os.path.join(fs_dir, default_log_dir),
+            'port': default_port,
+            'token': ''
         }
-        if not os.path.exists(path):
-            with open(path, 'w') as f:
+        if not os.path.exists(self.path):
+            with open(self.path, 'w') as f:
                 json.dump(self.defaults, f)
 
     def __enter__(self):
@@ -222,9 +222,11 @@ class VideoWritingManager:
 
 
     def __init__(self,
+            fs_dir: str='./',
             encoding: str='MP4V',
             fps: int=10,
             max_pause_duration: int=5):
+        self.fs_dir = fs_dir
         self.false_start = time.time()
         self.encoding = encoding
         self.fps = fps
@@ -250,10 +252,10 @@ class VideoWritingManager:
     def start_new_writer(self, image: np.array):
         """Start a new video path at some path, selected as function of time."""
         print(' * [Info] Start new video writer.')
-        with Config() as config:
+        with Config(self.fs_dir) as config:
             send_ios_notification(config['token'])
             video_path = os.path.join(
-                config['log_dir'], 'video%s.mp4' % time.time())
+                self.fs_dir, config['log_dir'], 'video%s.mp4' % time.time())
         width, height, _ = image.shape
         self.writer = cv2.VideoWriter(
             video_path,

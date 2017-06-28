@@ -16,9 +16,7 @@ FLASK_APP=run.py flask run
 
 # How it Works
 
-We use `Flask` for the application. On server-side, `opencv` abstracts away the camera. We compute the difference across `l` timesteps and use `scipy`'s `SVD` to analyze explained variance ratios. If the sum of the top `k` ratios exceed a threshold, we consider motion to be detected.
-
-`opencv` provides additional utilities that allow us to encode and write to mp4 videos. A Python interface for Apple's Push Notification Service `pyapns` allows the Python app to interface with iOS notifications accordingly. A third-party library `websockets` is used to launch a local socket, giving the web application live updates for "motion detected" or not.
+We use `Flask` for the application and `websockets` for live motion detection updates; server-side opens a socket and emits updates, and the frontend web interface hooks up to the appropriate socket using javascript.
 
 # Development
 

@@ -12,6 +12,16 @@ Ever have a friend hijack your computer while you're away? Ever wanted to catch 
 
 > This is not a serious security platform. For all intents and purposes, I wrote it to prank my friends. With that said, the application actually does what I claim above. I make no guarantees about its ability to prevent theft or its security. Please don't use this seriously.
 
+# How it Works
+
+On server-side, `opencv` abstracts away the camera. We compute the difference across `l` timesteps and use `scipy`'s `SVD` to analyze explained variance ratios. If the sum of the top `k` ratios exceed a threshold, we consider motion to be detected.
+
+`opencv` provides additional utilities that allow us to encode and write to mp4 videos. A Python interface for Apple's Push Notification Service `pyapns` allows the Python app to interface with iOS notifications accordingly. A third-party library `websockets` is used to launch a local socket, giving the application live updates for "motion detected" or not.
+
+- See the [`web/` README](http://github.com/alvinwan/motiosecure/tree/master/web) for more on a locally-hosted web application.
+- See the [`desktop/` README](http://github.com/alvinwan/motiosecure/tree/master/desktop) for how we packaged the application for Mac App Store distribution.
+- See the [`ios/` README](http://github.com/alvinwan/motiosecure/tree/master/ios) for the mobile component.
+
 ![screen shot 2017-06-28 at 1 01 23 am](https://user-images.githubusercontent.com/2068077/27626564-6536aadc-5b9d-11e7-8eaf-4f527ef77ad0.png)
 
 ![screen shot 2017-06-25 at 10 16 36 pm](https://user-images.githubusercontent.com/2068077/27526566-ae9b2b2e-59fb-11e7-81d3-1911b7dda2ef.png)

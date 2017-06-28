@@ -11,7 +11,7 @@ We expose several Python endpoints through zmq, with `zerorpc`:
 - `monitor`: Start and stop monitoring.
 
 The electron app runs a Python subprocess and calls these endpoints accordingly,
-using zerorpc. The monitoring app separately opens a websocket so that the electron frontend can communicate directly with the Python script. (This could probably be simplified)
+using zerorpc. The monitoring app separately opens a websocket so that the electron frontend can communicate directly with the Python script.
 
 For more information, see [Fleeting Year's example](https://github.com/fyears/electron-python-example), which this project is based on.
 

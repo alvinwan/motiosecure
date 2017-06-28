@@ -1,9 +1,10 @@
+const {app} = require('electron').remote;
 const zerorpc = require("zerorpc")
 let client = new zerorpc.Client()
 
 client.connect("tcp://127.0.0.1:4242")
 
-client.invoke("echo", "server ready", (error, res) => {
+client.invoke("onstart", app.getPath('userData'), (error, res) => {
   if(error || res !== 'server ready') {
     console.error(error)
   } else {
@@ -23,7 +24,7 @@ let monitorLink = document.querySelector('#monitor-link')
 
 function onServerReady() {
 
-  client.invoke("token", "", (error, res) => {
+  client.invoke("token", "", app.getPath('userData'), (error, res) => {
     if(error) {
       console.log(error)
     } else {
@@ -31,7 +32,7 @@ function onServerReady() {
     }
   })
 
-  client.invoke("accept", "", (error, res) => {
+  client.invoke("accept", "", app.getPath('userData'), (error, res) => {
     if(error) {
       console.log(error)
     } else {
@@ -60,7 +61,7 @@ function onServerReady() {
 
 acceptForm.addEventListener('submit', function(e) {
   e.preventDefault();
-  client.invoke("accept", acceptValue.value, (error, res) => {
+  client.invoke("accept", acceptValue.value, app.getPath('userData'), (error, res) => {
     if(error) {
       acceptResult.textContent = error
     } else {
@@ -69,7 +70,7 @@ acceptForm.addEventListener('submit', function(e) {
   })
 });
 
-tokenForm.addEventListener('submit', function(e) {
+tokenForm.addEventListener('submit', app.getPath('userData'), function(e) {
   e.preventDefault();
   client.invoke("token", tokenValue.value, (error, res) => {
     if(error) {
@@ -82,7 +83,7 @@ tokenForm.addEventListener('submit', function(e) {
 
 monitorLink.addEventListener('click', function (e) {
   e.preventDefault();
-  client.invoke("monitor", (error, res) => {
+  client.invoke("monitor", app.getPath('userData'), (error, res) => {
     if (error) {
       console.log(error)
     } else {

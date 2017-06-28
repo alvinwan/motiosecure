@@ -2,6 +2,7 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const path = require('path')
+const logger = require('electron-log');
 
 
 /*************************************************************
@@ -46,18 +47,17 @@ const createPyProc = () => {
   }
 
   if (pyProc != null) {
-    //console.log(pyProc)
-    console.log('child process success on port ' + port)
+    logger.info('Child process started port ' + port)
     pyProc.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
+      logger.info(`stdout: ${data}`);
     });
 
     pyProc.stderr.on('data', (data) => {
-      console.log(`stderr: ${data}`);
+      logger.error(`stderr: ${data}`)
     });
 
     pyProc.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
+      logger.info(`child process exited with code ${code}`);
     });
   }
 }
