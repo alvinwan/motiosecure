@@ -18,7 +18,7 @@ let acceptResult = document.querySelector('#accept-result')
 let tokenForm = document.querySelector('#token-form')
 let tokenValue = document.querySelector('#token-value')
 let tokenResult = document.querySelector('#token-result')
-// let monitorLink = document.querySelector('#monitor-link')
+let monitorLink = document.querySelector('#monitor-link')
 
 
 function onServerReady() {
@@ -38,6 +38,23 @@ function onServerReady() {
       acceptValue.value = res
     }
   })
+
+  var ws = new WebSocket("ws://127.0.0.1:5678/");
+  var status = document.getElementById('detected');
+  var originalClassName = status.className;
+  ws.onmessage = function (event) {
+      if (event.data == 'True') {
+        status.innerHTML = 'motion detected';
+        status.className = originalClassName;
+      } else if (event.data == 'False') {
+        status.innerHTML = 'No motion detected';
+        status.className = originalClassName + ' inactive';
+      } else {
+        status.innerHTML = event.data;
+        status.className = originalClassName + ' inactive';
+      }
+      console.log(event.data);
+  };
 }
 
 
@@ -52,8 +69,6 @@ acceptForm.addEventListener('submit', function(e) {
   })
 });
 
-
-
 tokenForm.addEventListener('submit', function(e) {
   e.preventDefault();
   client.invoke("token", tokenValue.value, (error, res) => {
@@ -64,3 +79,14 @@ tokenForm.addEventListener('submit', function(e) {
     }
   })
 });
+
+monitorLink.addEventListener('click', function (e) {
+  e.preventDefault();
+  client.invoke("monitor", (error, res) => {
+    if (error) {
+      console.log(error)
+    } else {
+      monitorLink.textContent = res;
+    }
+  })
+})

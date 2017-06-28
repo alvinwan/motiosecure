@@ -79,6 +79,10 @@ input[type="submit"]:hover,.button:hover {
   background-color:#962f2f;
 }
 
+div.monitoring {
+  padding: 2em 0;
+}
+
 span {
   color:#999;
 }
