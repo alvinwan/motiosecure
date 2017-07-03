@@ -1,14 +1,15 @@
 .PHONY: html
 
-all: dist/index.html dist/css/style.css
+all: dist/mac-1/index.html dist/mac-2/index.html dist/css/style.css
 
-dist/index.html:
-	html
+dist/mac-1/index.html: $(wildcard src/html/modules/*.html) src/html/mac-1.html src/data/global.json
+	make html
 
-include generated.mk
+dist/mac-2/index.html: $(wildcard src/html/modules/*.html) src/html/mac-2.html src/data/global.json
+	make html
 
-html: $(wildcard src/html/*.html) $(wildcard src/html/**/*.html) src/data/global.json
-		python main.py html
+html:
+	python main.py html
 
 dist/css/style.css: $(wildcard src/scss/*.scss)
 	python main.py sass
