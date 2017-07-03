@@ -8,6 +8,18 @@ html, body {
   margin:0;
 }
 
+.byline {
+  color:#000;
+  transform:rotate(-90deg);
+  position:absolute;
+  top:60%;
+  left:-17.5em;
+  z-index:21;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  font-size:0.8em;
+}
+
 .wrap-container {
   text-align:center;
   width:100%;
@@ -30,6 +42,12 @@ html, body {
   display:inline-block;
 }
 
+.button:hover {
+  background-color:#FFF;
+  color:#911d22;
+  text-decoration:none;
+}
+
 section {
   height:100%;
 }
@@ -50,7 +68,7 @@ section {
   .b1 {
     background-color:#c1272d;
     width:25%;
-    height:5em;
+    height:6em;
     margin-left:25%;
     margin-top:5em;
   }
@@ -58,14 +76,14 @@ section {
   .b2 {
     background-color:#c1272d;
     width:40%;
-    height:5em;
+    height:6em;
     margin-top:3em;
   }
 
   .b3 {
     background-color:#c1272d;
     width:40%;
-    height:5em;
+    height:6em;
     margin-left:25%;
     margin-top:8em;
     overflow:hidden;
@@ -83,7 +101,7 @@ section {
   .b4 {
     background-color:#911d22;
     width:20%;
-    height:5em;
+    height:6em;
     position:absolute;
     right:10%;
     top:3em;
@@ -92,7 +110,7 @@ section {
   .b5 {
     background-color:#911d22;
     width:35%;
-    height:6em;
+    height:7em;
     position:absolute;
     right:0;
     top:15em;
@@ -163,4 +181,62 @@ section {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#941e22', endColorstr='#6e161a',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   }
 
+}
+
+.confetti {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:12;
+
+  .fleck {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    position:absolute;
+    opacity:0.8;
+  }
+
+  .fleck:nth-child(odd) {
+    background-color:#fbb03b;
+  }
+
+  .fleck:nth-child(even) {
+    background-color:#22b573;
+  }
+
+  .f1 { top: 338px; left: 1071px; width: 2.000000em; height: 1.500000em}
+  .f2 { top: 149px; left: 114px; width: 0.500000em; height: 2.500000em}
+  .f3 { top: 457px; left: 882px; width: 2.000000em; height: 0.500000em}
+  .f4 { top: 321px; left: 325px; width: 3.500000em; height: 4.000000em}
+  .f5 { top: 371px; left: 1074px; width: 3.500000em; height: 4.500000em}
+  .f6 { top: 426px; left: 380px; width: 1.000000em; height: 2.000000em}
+  .f7 { top: 439px; left: 107px; width: 3.000000em; height: 2.000000em}
+  .f8 { top: 168px; left: 282px; width: 2.000000em; height: 3.000000em}
+  .f9 { top: 316px; left: 939px; width: 2.000000em; height: 2.000000em}
+  .f10 { top: 474px; left: 340px; width: 2.500000em; height: 4.000000em}
+  .f11 { top: 398px; left: 146px; width: 0.500000em; height: 4.500000em}
+  .f12 { top: 219px; left: 417px; width: 2.500000em; height: 1.000000em}
+  .f13 { top: 455px; left: 1172px; width: 3.500000em; height: 4.000000em}
+  .f14 { top: 51px; left: 114px; width: 1.000000em; height: 2.000000em}
+  .f15 { top: 45px; left: 495px; width: 4.000000em; height: 1.000000em}
+  .f16 { top: 387px; left: 1182px; width: 1.500000em; height: 3.500000em}
+  .f17 { top: 98px; left: 222px; width: 2.000000em; height: 4.500000em}
+  .f18 { top: 259px; left: 539px; width: 4.500000em; height: 4.500000em}
+  .f19 { top: 166px; left: 777px; width: 1.000000em; height: 4.000000em}
+  .f20 { top: 209px; left: 795px; width: 3.000000em; height: 4.500000em}
+  .f21 { top: 468px; left: 375px; width: 1.500000em; height: 2.500000em}
+  .f22 { top: 97px; left: 655px; width: 2.500000em; height: 0.500000em}
+  .f23 { top: 299px; left: 617px; width: 1.500000em; height: 2.500000em}
+  .f24 { top: 286px; left: 903px; width: 0.500000em; height: 2.500000em}
+  .f25 { top: 278px; left: 6px; width: 1.000000em; height: 1.500000em}
+  .f26 { top: 452px; left: 527px; width: 4.000000em; height: 0.500000em}
+  .f27 { top: 61px; left: 1053px; width: 3.500000em; height: 3.500000em}
+  .f28 { top: 368px; left: 881px; width: 4.000000em; height: 2.500000em}
+  .f29 { top: 439px; left: 1139px; width: 4.000000em; height: 2.000000em}
+  .f30 { top: 460px; left: 545px; width: 4.500000em; height: 3.000000em}
 }

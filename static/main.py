@@ -28,10 +28,10 @@ def write_html(source: str, dest: str, context: dict):
             dest_path = os.path.join(dest, 'index.html')
         else:
             dest_path = os.path.join(
-                dest, filename, os.path.basename(path))
+                dest, filename, 'index.html')
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-        with open(dest_path, 'w') as dest:
-            dest.write(env.get_template(path).render(context))
+        with open(dest_path, 'w') as target:
+            target.write(env.get_template(path).render(context))
 
 
 @task('sass')
