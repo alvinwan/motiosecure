@@ -13,3 +13,6 @@ html:
 
 dist/css/style.css: $(wildcard src/scss/*.scss)
 	python main.py sass
+
+launch:
+	bash -c 'while [ 0 ]; do make;sleep 1;done'
