@@ -1,3 +1,6 @@
+![mockup](https://user-images.githubusercontent.com/2068077/27844312-bb4019f4-60d4-11e7-95b6-11abaac2690f.png)
+
+
 # MotioSecure
 Simple security platform with motion detection implementation for cheap, low-quality camera lens
 
