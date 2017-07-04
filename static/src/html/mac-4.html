@@ -1,0 +1,19 @@
+{% extends "src/html/modules/base.html" %}
+{% block content %}
+<section class="headline green">
+  <div class="text wrap-container">
+    <div class="wrap">
+      <h3 class="subtitle">Monitoring...</h3>
+      <h2 class="title">No Motion</h2>
+      <div class="parts">
+        <p class="copy col-md-5"></p>
+        <a href="/mac-1" class="button">Pause Monitoring</a>
+      </div>
+    </div>
+    <p class="byline">Computer Vision for (non-serious) Security . created by Alvin Wan</p>
+  </div>
+  {% include "src/html/modules/confetti.html" %}
+  {% include "src/html/modules/blocks.html" %}
+  {% include "src/html/modules/background_left.html" %}
+</section>
+{% endblock %}
