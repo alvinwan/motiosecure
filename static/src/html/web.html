@@ -1,0 +1,40 @@
+{% extends "src/html/modules/base.html" %}
+{% block content %}
+<section class="headline web">
+  <div class="text wrap-container">
+    <div class="wrap">
+      <div class="col-md-6">
+        <h1 class="title">Need a watchdog?</h1>
+        <p class="copy">You're in luck. Whether you're away for a bathroom break or a quick snack heist, MotioSecure watches over your computer when you're away, notifying you of potential intruders.</p>
+        <p class="store-link"><a href="{{ links.mac }}">&raquo; Download Mac App <span>from Mac App Store</span></a></p>
+        <p class="store-link"><a href="{{ links.iphone }}">&raquo; Download iPhone App <span>from App Store</span></a></p>
+      </div>
+      <div class="col-md-6 mockup-container">
+        <img class="mockup" src="/images/mockup.png">
+      </div>
+    </div>
+  </div>
+  {% include "src/html/modules/reduced_confetti.html" %}
+  {% include "src/html/modules/blocks.html" %}
+  {% include "src/html/modules/background_right.html" %}
+</section>
+<section class="info web">
+  {% include "src/html/modules/items.html" %}
+  {% include "src/html/modules/confetti.html" %}
+  {% include "src/html/modules/background_left.html" %}
+</section>
+<footer>
+  <div class="col-md-4">
+    <h1>MotioSecure</h1>
+    <p>All data is stored locally on your computer. Live feeds and associated data are <u>not</u> transmitted to outside servers.</p>
+  </div>
+  <div class="col-md-4">
+    <li><a href="{{ links.mac }}">Download Mac App</a></li>
+    <li><a href="{{ links.iphone }}">Download iPhone App</a></li>
+  </div>
+  <div class="col-md-4">
+    <li><a href="{{ links.github }}">View code on Github</a></li>
+    <li>created by <a href="http://alvinwan.com">Alvin Wan</a></li>
+  </div>
+</footer>
+{% endblock %}
