@@ -33,12 +33,17 @@ function onServerReady() {
 
 function initializeSplash() {
   let startButton = document.querySelector('#start-monitoring');
+  let configureButton = document.querySelector('#configure-monitoring');
 
   startButton.addEventListener('click', function(e) {
     e.preventDefault();
-    loadNextPage("form1");
-    onServerReady();
+    loadNextPage("monitoring");
   });
+
+  configureButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    loadNextPage("form1")
+  })
 }
 
 function loadNextPage(pageName) {
@@ -108,6 +113,7 @@ function initializeMonitoring() {
   var isMonitoring = false;
   let monitorLink = document.querySelector('#monitor-link')
   let monitoringStatus = document.querySelector('#monitor-status')
+  let configureButton = document.querySelector('#configure-monitoring');
 
   var ws = new WebSocket("ws://127.0.0.1:5678/");
   var status = document.getElementById('detected');
@@ -149,6 +155,11 @@ function initializeMonitoring() {
       status.style.opacity = 0.5;
     }
   }
+
+  configureButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    loadNextPage("form1")
+  })
 
   toggleMonitoring();
 }

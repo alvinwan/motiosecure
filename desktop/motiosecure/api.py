@@ -256,7 +256,8 @@ class VideoWritingManager:
         """Start a new video path at some path, selected as function of time."""
         print(' * [Info] Start new video writer.')
         with Config(self.fs_dir) as config:
-            send_ios_notification(config['token'])
+            if 'token' in config and config['token']:
+                send_ios_notification(config['token'])
             video_path = os.path.join(
                 self.fs_dir, config['log_dir'], 'video%s.mp4' % time.time())
         width, height, _ = image.shape
