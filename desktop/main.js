@@ -81,13 +81,12 @@ app.on('will-quit', exitPyProc)
 let mainWindow = null
 
 const createWindow = () => {
-  mainWindow = new BrowserWindow({width: 1200, height: 600})
+  mainWindow = new BrowserWindow({width: 1200, height: 600, frame: false})
   mainWindow.loadURL(require('url').format({
     pathname: path.join(__dirname, 'html/index.html'),
     protocol: 'file:',
     slashes: true
   }))
-  mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null

@@ -58,6 +58,11 @@ html, body {
   color:#FFF;
 }
 
+.button:focus {
+  text-decoration:none;
+  color:#FFF;
+}
+
 section {
   height:100%;
 }

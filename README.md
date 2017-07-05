@@ -25,6 +25,8 @@ On server-side, `opencv` abstracts away the camera. We compute the difference ac
 - See the [`desktop/` README](http://github.com/alvinwan/motiosecure/tree/master/desktop) for how we packaged the application for Mac App Store distribution.
 - See the [`ios/` README](http://github.com/alvinwan/motiosecure/tree/master/ios) for the mobile component.
 
-![screen shot 2017-06-28 at 1 01 23 am](https://user-images.githubusercontent.com/2068077/27626564-6536aadc-5b9d-11e7-8eaf-4f527ef77ad0.png)
-
-![screen shot 2017-06-25 at 10 16 36 pm](https://user-images.githubusercontent.com/2068077/27526566-ae9b2b2e-59fb-11e7-81d3-1911b7dda2ef.png)
+![screen shot 2017-07-04 at 6 07 28 pm](https://user-images.githubusercontent.com/2068077/27845420-35d9e348-60e4-11e7-98b8-678f87ad2a74.png)
+![screen shot 2017-07-04 at 6 07 36 pm](https://user-images.githubusercontent.com/2068077/27845417-35d66a7e-60e4-11e7-9786-e3e0be2dc05e.png)
+![screen shot 2017-07-04 at 6 07 44 pm](https://user-images.githubusercontent.com/2068077/27845421-35dc051a-60e4-11e7-9899-44d506017347.png)
+![screen shot 2017-07-04 at 6 07 50 pm](https://user-images.githubusercontent.com/2068077/27845418-35d77b76-60e4-11e7-853e-f5e7f4b5baee.png)
+![screen shot 2017-07-04 at 6 10 26 pm](https://user-images.githubusercontent.com/2068077/27845419-35d81ee6-60e4-11e7-8b1b-3d4ec012e1d0.png)

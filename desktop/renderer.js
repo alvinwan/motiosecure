@@ -112,6 +112,7 @@ function initializeMonitoring() {
   var ws = new WebSocket("ws://127.0.0.1:5678/");
   var status = document.getElementById('detected');
   ws.onmessage = function (event) {
+    if (isMonitoring) {
       if (event.data == 'True') {
         status.innerHTML = 'Motion detected';
         status.style.opacity = 1;
@@ -123,6 +124,7 @@ function initializeMonitoring() {
         status.style.opacity = 1;
       }
       console.log(event.data);
+    }
   };
 
   monitorLink.addEventListener('click', function (e) {
@@ -140,9 +142,11 @@ function initializeMonitoring() {
       }
     })
     if (isMonitoring) {
-      monitoringStatus = 'Monitoring...'
+      monitoringStatus.innerHTML = 'Monitoring...'
     } else {
-      monitoringStatus = 'Not monitoring'
+      monitoringStatus.innerHTML = 'Not monitoring'
+      status.innerHTML = "(paused)";
+      status.style.opacity = 0.5;
     }
   }
 
