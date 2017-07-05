@@ -6,6 +6,8 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const logger = require('electron-log');
 
+logger.transports.file.level = 'info'
+logger.transports.file.file = app.getPath('userData') + '/log.txt'
 
 /*************************************************************
  * py process
@@ -51,11 +53,13 @@ const createPyProc = () => {
   if (pyProc != null) {
     logger.info('Child process started port ' + port)
     pyProc.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
       logger.info(`stdout: ${data}`);
     });
 
     pyProc.stderr.on('data', (data) => {
-      logger.error(`stderr: ${data}`)
+      console.log(`stderr: ${data}`);
+      logger.error(`stderr: ${data}`);
     });
 
     pyProc.on('close', (code) => {

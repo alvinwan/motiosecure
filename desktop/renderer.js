@@ -1,7 +1,7 @@
 'use strict';
 
-const remote = require('electron').remote;
-const {app} = remote;
+const remote = require('electron').remote
+const {app} = remote
 const zerorpc = require("zerorpc")
 const path = require('path')
 let client = new zerorpc.Client()
@@ -13,6 +13,8 @@ client.invoke("onstart", app.getPath('userData'), (error, res) => {
     console.error(error)
   } else {
     console.log("server is ready")
+    console.log(app.getPath('exe'))
+    console.log('Logs and videos at:', app.getPath('userData'));
     onServerReady()
   }
 })
@@ -140,7 +142,11 @@ function initializeMonitoring() {
 
   function toggleMonitoring() {
     isMonitoring = !isMonitoring;
-    client.invoke("monitor", app.getPath('userData'), (error, res) => {
+    client.invoke(
+        "monitor",
+        app.getPath('userData'),
+        app.getPath('exe'),
+        (error, res) => {
       if (error) {
         console.log(error)
       } else {

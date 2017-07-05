@@ -18,6 +18,7 @@ import os
 import os.path
 import json
 import zerorpc
+import sys
 
 
 motion_detected = False
@@ -41,8 +42,11 @@ class MotioSecureApi:
                 return config.get('accept', [''])[0]
             if 'accept' not in config:
                 config['accept'] = []
-            config['accept'].append(contact)
-        call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [contact])
+            if contact not in config['accept']:
+                config['accept'].append(contact)
+                call('defaults write com.apple.FaceTime AutoAcceptInvitesFrom -array-add'.split(' ') + [contact])
+            else:
+                return 'Contact already added.'
         return 'Successfully added contact'
 
     def token(self, token: str, fs_dir: str):
@@ -57,10 +61,10 @@ class MotioSecureApi:
             config['token'] = token
         return 'Successfully set token'
 
-    def monitor(self, fs_dir: str):
+    def monitor(self, fs_dir: str, exe_path: str):
         if MotioSecureApi.num_monitor_threads == 0:
             MotioSecureApi.should_stop_thread = False
-            threading.Thread(target=monitor, args=(fs_dir,)).start()
+            threading.Thread(target=monitor, args=(fs_dir, exe_path)).start()
             MotioSecureApi.num_monitor_threads += 1
             return 'Stop monitoring'
         else:
@@ -113,7 +117,7 @@ class MotionDetector:
         return total_explained_variance > self.threshold
 
 
-def monitor(fs_dir: str):
+def monitor(fs_dir: str, exe_path: str):
     """Monitor the camera for motion and call the appropriate hooks."""
     global motion_detected
     capture = cv2.VideoCapture(0)
@@ -121,7 +125,7 @@ def monitor(fs_dir: str):
         print('Warning: unable to open video source: ', source)
 
     motion_detector = MotionDetector()
-    video_manager = VideoWritingManager(fs_dir)
+    video_manager = VideoWritingManager(fs_dir, exe_path=exe_path)
 
     while True:
         _, image = capture.read()
@@ -154,15 +158,21 @@ async def send_detections(websocket, path):
         await asyncio.sleep(0.1)
 
 
-def send_ios_notification(token: str):
+def send_ios_notification(token: str, fs_dir: str, exe_path: str):
     """Sends 'motion detected' notification to iOS device."""
-    print(' * [Info] Sending iOS notification')
-    apns = APNs(use_sandbox=True, cert_file='bundle.pem', key_file='bundle.pem')
+    print(' * [Info] Attempting to send iOS notification...')
+    pem_path = os.path.join(exe_path.replace('MacOS/MotioSecure', ''),
+        'Resources', 'app', 'bundle.pem')
+    apns = APNs(
+        use_sandbox=True,
+        cert_file=pem_path,
+        key_file=pem_path)
 
     # Send a notification
     payload = Payload(
         alert="Motion detected", sound="default", badge=1, mutable_content=True)
     apns.gateway_server.send_notification(token, payload)
+    print(' * [Info] iOS notification sent')
 
 
 #############
@@ -227,9 +237,11 @@ class VideoWritingManager:
     def __init__(self,
             fs_dir: str='./',
             encoding: str='MP4V',
-            fps: int=10,
-            max_pause_duration: int=5):
+            fps: int=5,
+            max_pause_duration: int=5,
+            exe_path: str='./MotioSecure-darwin-x64/MotioSecure.app/Contents/MaxOS/MotioSecure'):
         self.fs_dir = fs_dir
+        self.exe_path = exe_path
         self.false_start = time.time()
         self.encoding = encoding
         self.fps = fps
@@ -256,8 +268,9 @@ class VideoWritingManager:
         """Start a new video path at some path, selected as function of time."""
         print(' * [Info] Start new video writer.')
         with Config(self.fs_dir) as config:
-            if 'token' in config and config['token']:
-                send_ios_notification(config['token'])
+            if config.get('token', None):
+                send_ios_notification(
+                    config['token'], self.fs_dir, self.exe_path)
             video_path = os.path.join(
                 self.fs_dir, config['log_dir'], 'video%s.mp4' % time.time())
         width, height, _ = image.shape
@@ -269,4 +282,9 @@ class VideoWritingManager:
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except:
+        e = sys.exc_info()[0]
+        with open(os.path.join(fs_dir, 'log_python.txt'), 'a') as f:
+            f.write(str(e))
