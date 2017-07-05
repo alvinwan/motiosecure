@@ -27,6 +27,7 @@ class MotioSecureApi:
 
     num_monitor_threads = 0
     should_stop_thread = False
+    socket_started = False
 
     def accept(self, contact: str, fs_dir: str):
         """Add contact information to auto-accept whitelist.
@@ -54,7 +55,7 @@ class MotioSecureApi:
             if not token:
                 return config['token']
             config['token'] = token
-        return 'Successfully added token'
+        return 'Successfully set token'
 
     def monitor(self, fs_dir: str):
         if MotioSecureApi.num_monitor_threads == 0:
@@ -67,7 +68,9 @@ class MotioSecureApi:
             return 'Start monitoring'
 
     def onstart(self, fs_dir: str) -> str:
-        threading.Thread(target=start_socket, args=(fs_dir,)).start()
+        if not MotioSecureApi.socket_started:
+            MotioSecureApi.socket_started = True
+            threading.Thread(target=start_socket, args=(fs_dir,)).start()
         return "server ready"
 
 

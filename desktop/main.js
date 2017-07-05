@@ -1,3 +1,5 @@
+'use strict';
+
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
@@ -79,9 +81,9 @@ app.on('will-quit', exitPyProc)
 let mainWindow = null
 
 const createWindow = () => {
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 1200, height: 600})
   mainWindow.loadURL(require('url').format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'html/index.html'),
     protocol: 'file:',
     slashes: true
   }))
