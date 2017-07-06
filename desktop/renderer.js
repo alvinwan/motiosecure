@@ -164,6 +164,9 @@ function initializeMonitoring() {
 
   configureButton.addEventListener('click', function(e) {
     e.preventDefault();
+    if (isMonitoring) {
+      toggleMonitoring();
+    }
     loadNextPage("form1")
   })
 
