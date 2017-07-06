@@ -161,8 +161,10 @@ async def send_detections(websocket, path):
 def send_ios_notification(token: str, fs_dir: str, exe_path: str):
     """Sends 'motion detected' notification to iOS device."""
     print(' * [Info] Attempting to send iOS notification...')
-    pem_path = os.path.join(exe_path.replace('MacOS/MotioSecure', ''),
-        'Resources', 'app', 'bundle.pem')
+    pem_path = 'bundle.pem'
+    if 'MacOS/Electron' not in exe_path:
+        pem_path = exe_path.replace('MacOS/MotioSecure', os.path.join(
+        'Resources', 'app', 'bundle.pem'))
     apns = APNs(
         use_sandbox=True,
         cert_file=pem_path,

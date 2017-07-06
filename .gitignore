@@ -10,6 +10,7 @@ build
 *.provisionprofile
 node_modules
 MotioSecure-*-x64
+*.app
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
