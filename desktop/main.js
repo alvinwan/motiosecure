@@ -1,10 +1,10 @@
 'use strict';
 
 const electron = require('electron')
-const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const logger = require('electron-log');
+const {app, Menu} = electron
 
 logger.transports.file.level = 'info'
 logger.transports.file.file = app.getPath('userData') + '/log.txt'
@@ -91,10 +91,45 @@ const createWindow = () => {
     protocol: 'file:',
     slashes: true
   }))
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  var template = [{
+      label: "Application",
+      submenu: [
+          { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+          { type: "separator" },
+          { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
+      ]}, {
+      label: "Edit",
+      submenu: [
+          { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+          { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+          { type: "separator" },
+          { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+          { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+          { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+          { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+      ]},
+      {
+        role: 'help',
+        submenu: [
+          {
+            label: 'Learn More',
+            click () { electron.shell.openExternal('https://github.com/alvinwan/motiosecure') }
+          },
+          {
+            label: 'About Alvin',
+            click () { electron.shell.openExternal('http://alvinwan.com') }
+          }
+        ]
+      }
+  ];
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 app.on('ready', createWindow)
